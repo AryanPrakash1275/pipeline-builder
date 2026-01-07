@@ -6,6 +6,7 @@ import { BaseNode } from "./BaseNode";
 export const LLMNode = ({ id }) => {
   return (
     <BaseNode
+      nodeId={id}
       title="LLM"
       subtitle="System + Prompt → Response"
       handles={[

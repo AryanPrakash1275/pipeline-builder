@@ -47,7 +47,7 @@ export const TextNode = ({ id, data }) => {
   }, [vars, id]);
 
   return (
-    <BaseNode title="Text" subtitle="Template input" handles={handles}>
+    <BaseNode nodeId={id} title="Text" subtitle="Template input" handles={handles}>
       <div className="vs-field">
         <label>Text</label>
         <textarea

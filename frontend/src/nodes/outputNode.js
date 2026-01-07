@@ -15,6 +15,7 @@ export const OutputNode = ({ id, data }) => {
 
   return (
     <BaseNode
+      nodeId={id}
       title="Output"
       subtitle="Pipeline exit"
       handles={[

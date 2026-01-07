@@ -11,7 +11,10 @@ app = FastAPI()
 # Allow frontend dev server to call backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,14 +45,23 @@ class Pipeline(BaseModel):
     edges: List[Edge]
 
 
-def check_is_dag(nodes: List[Node], edges: List[Edge]) -> bool:
+def dag_analysis(nodes: List[Node], edges: List[Edge]) -> Dict[str, Any]:
     """
     Kahn's algorithm (topological sort).
-    If we can process all nodes => DAG. Otherwise => cycle exists.
+    - If we can process all nodes => DAG.
+    - Otherwise => cycle exists.
+
+    Returns:
+      {
+        "is_dag": bool,
+        "topo_order": [node_id, ...]  # only when DAG
+        "cycle_nodes": [node_id, ...] # only when NOT DAG
+      }
     """
     node_ids = {n.id for n in nodes}
-    indegree = {nid: 0 for nid in node_ids}
-    adj = defaultdict(list)
+
+    indegree: Dict[str, int] = {nid: 0 for nid in node_ids}
+    adj: Dict[str, List[str]] = defaultdict(list)
 
     for e in edges:
         # Ignore edges that refer to missing nodes (defensive)
@@ -59,23 +71,34 @@ def check_is_dag(nodes: List[Node], edges: List[Edge]) -> bool:
         indegree[e.target] += 1
 
     q = deque([nid for nid, deg in indegree.items() if deg == 0])
+    topo: List[str] = []
     processed = 0
 
     while q:
         u = q.popleft()
+        topo.append(u)
         processed += 1
         for v in adj[u]:
             indegree[v] -= 1
             if indegree[v] == 0:
                 q.append(v)
 
-    return processed == len(node_ids)
+    is_dag = processed == len(node_ids)
+
+    if is_dag:
+        return {"is_dag": True, "topo_order": topo, "cycle_nodes": []}
+
+    # Nodes still with indegree > 0 are part of (or downstream of) a cycle
+    cycle_nodes = [nid for nid, deg in indegree.items() if deg > 0]
+    return {"is_dag": False, "topo_order": [], "cycle_nodes": cycle_nodes}
 
 
 @app.post("/pipelines/parse")
 def parse_pipeline(p: Pipeline):
-    num_nodes = len(p.nodes)
-    num_edges = len(p.edges)
-    is_dag = check_is_dag(p.nodes, p.edges)
+    analysis = dag_analysis(p.nodes, p.edges)
 
-    return {"num_nodes": num_nodes, "num_edges": num_edges, "is_dag": is_dag}
+    return {
+        "num_nodes": len(p.nodes),
+        "num_edges": len(p.edges),
+        **analysis,
+    }

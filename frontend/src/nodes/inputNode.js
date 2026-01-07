@@ -15,6 +15,7 @@ export const InputNode = ({ id, data }) => {
 
   return (
     <BaseNode
+      nodeId={id} // ✅ REQUIRED for ✕ delete to work
       title="Input"
       subtitle="Pipeline entry"
       handles={[

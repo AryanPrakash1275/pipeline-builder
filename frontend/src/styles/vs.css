@@ -1,4 +1,10 @@
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+   Design Tokens
+   ========================= */
 
 :root {
   --vs-radius: 14px;
@@ -51,11 +57,24 @@ html[data-theme="light"] {
   --vs-shadow: 0 12px 30px rgba(15, 23, 48, 0.10);
 }
 
+/* =========================
+   Base Page Styling
+   ========================= */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   background:
-    radial-gradient(1200px 700px at 20% 10%, rgba(124, 92, 255, 0.14), transparent 60%),
-    radial-gradient(900px 600px at 90% 20%, rgba(0, 200, 255, 0.10), transparent 55%),
-    var(--vs-bg);
+    radial-gradient(1200px 700px at 20% 10%, rgba(124, 92, 255, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(0, 200, 255, 0.12), transparent 55%),
+    radial-gradient(1100px 700px at 50% 90%, rgba(34, 197, 94, 0.06), transparent 60%),
+    linear-gradient(180deg, #070a14, var(--vs-bg));
   color: var(--vs-text);
 }
 
@@ -63,8 +82,13 @@ html[data-theme="light"] body {
   background:
     radial-gradient(1200px 700px at 20% 10%, rgba(124, 92, 255, 0.10), transparent 60%),
     radial-gradient(900px 600px at 90% 20%, rgba(0, 200, 255, 0.08), transparent 55%),
-    var(--vs-bg);
+    linear-gradient(180deg, #ffffff, var(--vs-bg));
+  color: var(--vs-text);
 }
+
+/* =========================
+   Node Base Styles
+   ========================= */
 
 .vs-node {
   position: relative;
@@ -91,6 +115,7 @@ html[data-theme="light"] body {
   align-items: center;
   gap: 8px;
   font-weight: 700;
+  font-size: 14px;
 }
 
 .vs-node__subtitle {
@@ -104,6 +129,10 @@ html[data-theme="light"] body {
   display: grid;
   gap: 12px;
 }
+
+/* =========================
+   Fields & Inputs
+   ========================= */
 
 .vs-field {
   display: grid;
@@ -124,6 +153,7 @@ html[data-theme="light"] body {
   background: var(--vs-input-bg);
   color: var(--vs-text);
   padding: 10px;
+  outline: none;
 }
 
 .vs-textarea--resizable {
@@ -144,12 +174,18 @@ html[data-theme="light"] body {
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.16);
 }
 
+/* =========================
+   Handles
+   ========================= */
+
 .vs-handle {
   width: 12px !important;
   height: 12px !important;
   border-radius: 999px !important;
   border: 2px solid rgba(255, 255, 255, 0.65) !important;
   background: var(--vs-accent) !important;
+  opacity: 0.65;
+  transition: opacity 120ms ease, transform 120ms ease;
 }
 
 html[data-theme="light"] .vs-handle {
@@ -162,6 +198,11 @@ html[data-theme="light"] .vs-handle {
 
 .vs-handle--source {
   background: var(--vs-accent) !important;
+}
+
+.react-flow__node:hover .react-flow__handle {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 .react-flow__node {
@@ -200,15 +241,9 @@ html[data-theme="light"] .vs-handle {
   text-align: left;
 }
 
-.vs-muted {
-  font-size: 13px;
-  color: var(--vs-muted);
-}
-
-.vs-muted--sm {
-  font-size: 12px;
-  opacity: 0.9;
-}
+/* =========================
+   Node Delete Button
+   ========================= */
 
 .vs-node__delete {
   position: absolute;
@@ -231,6 +266,112 @@ html[data-theme="light"] .vs-handle {
   border-color: rgba(255, 80, 80, 0.35);
 }
 
+/* =========================
+   Toolbar + Palette
+   ========================= */
+
+.vs-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--vs-border);
+  background: linear-gradient(180deg, rgba(11, 16, 32, 0.85), rgba(11, 16, 32, 0.65));
+  backdrop-filter: blur(12px);
+}
+
+html[data-theme="light"] .vs-toolbar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.65));
+}
+
+.vs-toolbar__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vs-toolbar__title {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.vs-toolbar__spacer {
+  flex: 1;
+}
+
+.vs-control {
+  border: 1px solid var(--vs-input-border);
+  background: var(--vs-input-bg);
+  color: var(--vs-text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 12px;
+  outline: none;
+}
+
+.vs-btn {
+  border: 1px solid var(--vs-input-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--vs-text);
+  border-radius: 12px;
+  padding: 8px 11px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.vs-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.vs-palette {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vs-pill {
+  border: 1px solid var(--vs-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--vs-text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 12px;
+  box-shadow: var(--vs-shadow);
+}
+
+/* =========================
+   Canvas + Submit
+   ========================= */
+
+.vs-canvas-wrap {
+  position: relative;
+  width: 100vw;
+  height: 70vh;
+}
+
+.vs-submit-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 60;
+}
+
+/* =========================
+   ReactFlow Polish
+   ========================= */
+
+.react-flow__edge-path {
+  stroke: rgba(255, 255, 255, 0.40);
+  stroke-width: 2;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke: rgba(255, 255, 255, 0.30);
+  stroke-dasharray: 4 6;
+}
+
 .react-flow__controls button {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid var(--vs-border) !important;
@@ -239,4 +380,15 @@ html[data-theme="light"] .vs-handle {
 
 html[data-theme="light"] .react-flow__controls button {
   background: rgba(15, 23, 48, 0.06) !important;
+}
+
+.react-flow__minimap {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .react-flow__minimap {
+  background: rgba(255, 255, 255, 0.75);
 }

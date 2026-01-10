@@ -11,14 +11,18 @@ export const SwitchNode = ({ id }) => {
       title="Switch"
       subtitle="Route input to A or B"
       handles={[
-        { type: "target", position: Position.Left, id: `${id}-in`, label: "in" },
-        { type: "source", position: Position.Right, id: `${id}-a`, label: "A", style: { top: 70 } },
-        { type: "source", position: Position.Right, id: `${id}-b`, label: "B", style: { top: 110 } },
+        { type: "target", position: Position.Left, id: `${id}-in`, label: "in", slot: 0 },
+        { type: "source", position: Position.Right, id: `${id}-a`, label: "A", slot: 0 },
+        { type: "source", position: Position.Right, id: `${id}-b`, label: "B", slot: 1 },
       ]}
     >
       <div className="vs-field">
         <label>Route to</label>
-        <select className="vs-select" value={mode} onChange={(e) => setMode(e.target.value)}>
+        <select
+          className="vs-select"
+          value={mode}
+          onChange={(e) => setMode(e.target.value)}
+        >
           <option value="A">A</option>
           <option value="B">B</option>
         </select>

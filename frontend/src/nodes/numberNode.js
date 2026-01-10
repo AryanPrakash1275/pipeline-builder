@@ -1,3 +1,4 @@
+// src/nodes/numberNode.js
 import React, { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";
@@ -12,7 +13,11 @@ export const NumberNode = ({ id, data }) => {
       title="Number"
       subtitle="Constant numeric value"
       handles={[
-        { type: "source", position: Position.Right, id: `${id}-value` },
+        {
+          type: "source",
+          position: Position.Right,
+          id: `${id}-value`,
+        },
       ]}
     >
       <div className="vs-field">

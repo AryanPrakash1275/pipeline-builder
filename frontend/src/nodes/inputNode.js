@@ -1,5 +1,4 @@
-// inputNode.js
-
+// src/nodes/inputNode.js
 import { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";
@@ -15,7 +14,7 @@ export const InputNode = ({ id, data }) => {
 
   return (
     <BaseNode
-      nodeId={id} // ✅ REQUIRED for ✕ delete to work
+      nodeId={id}
       title="Input"
       subtitle="Pipeline entry"
       handles={[

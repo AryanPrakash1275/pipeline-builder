@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";
 
@@ -15,17 +15,7 @@ function extractTemplateVars(text) {
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || "");
 
-  const taRef = useRef(null);
-
   const vars = useMemo(() => extractTemplateVars(currText), [currText]);
-
-  useEffect(() => {
-    const el = taRef.current;
-    if (!el) return;
-
-    el.style.height = "0px";
-    el.style.height = `${el.scrollHeight}px`;
-  }, [currText]);
 
   const handles = useMemo(() => {
     const leftInputs = vars.map((v, idx) => ({
@@ -33,7 +23,6 @@ export const TextNode = ({ id, data }) => {
       type: "target",
       position: Position.Left,
       label: v,
-      style: { top: 70 + idx * 26 },
     }));
 
     return [
@@ -51,16 +40,14 @@ export const TextNode = ({ id, data }) => {
       <div className="vs-field">
         <label>Text</label>
         <textarea
-          ref={taRef}
-          className="vs-textarea"
+          className="vs-textarea vs-textarea--noresize"
           value={currText}
           onChange={(e) => setCurrText(e.target.value)}
-          style={{ resize: "none", overflow: "hidden" }}
         />
       </div>
 
       {vars.length > 0 ? (
-        <div style={{ fontSize: 12, opacity: 0.7 }}>
+        <div className="vs-muted vs-muted--sm">
           Variables: {vars.join(", ")}
         </div>
       ) : null}

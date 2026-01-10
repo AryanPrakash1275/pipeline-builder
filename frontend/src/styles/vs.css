@@ -1,47 +1,89 @@
+*, *::before, *::after { box-sizing: border-box; }
+
 :root {
+  --vs-radius: 14px;
+  --vs-field-radius: 10px;
+  --vs-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  --vs-space-1: 6px;
+  --vs-space-2: 10px;
+  --vs-space-3: 12px;
+
+  --vs-accent: #7c5cff;
+  --vs-green: #22c55e;
+
   --vs-bg: #0b1020;
   --vs-panel: #0f1730;
-  --vs-card: #111b38;
-  --vs-border: rgba(255, 255, 255, 0.08);
+  --vs-card: rgba(17, 27, 56, 0.94);
+  --vs-border: rgba(255, 255, 255, 0.10);
+
   --vs-text: rgba(255, 255, 255, 0.92);
   --vs-muted: rgba(255, 255, 255, 0.62);
-  --vs-accent: #7c5cff;
-  --vs-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  --vs-radius: 14px;
+
+  --vs-input-bg: rgba(255, 255, 255, 0.04);
+  --vs-input-border: rgba(255, 255, 255, 0.12);
+
+  --vs-header-bg: rgba(255, 255, 255, 0.03);
+
+  --vs-delete-bg: rgba(255, 255, 255, 0.06);
+  --vs-delete-border: rgba(255, 255, 255, 0.18);
+
+  --vs-handle-outset: 14px;
+}
+
+html[data-theme="light"] {
+  --vs-bg: #f6f7fb;
+  --vs-panel: #ffffff;
+  --vs-card: rgba(255, 255, 255, 0.96);
+  --vs-border: rgba(15, 23, 48, 0.14);
+
+  --vs-text: rgba(15, 23, 48, 0.92);
+  --vs-muted: rgba(15, 23, 48, 0.62);
+
+  --vs-input-bg: rgba(15, 23, 48, 0.04);
+  --vs-input-border: rgba(15, 23, 48, 0.14);
+
+  --vs-header-bg: rgba(15, 23, 48, 0.03);
+
+  --vs-delete-bg: rgba(15, 23, 48, 0.04);
+  --vs-delete-border: rgba(15, 23, 48, 0.14);
+
+  --vs-shadow: 0 12px 30px rgba(15, 23, 48, 0.10);
 }
 
 body {
-  background: radial-gradient(
-      1200px 700px at 20% 10%,
-      rgba(124, 92, 255, 0.18),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 600px at 90% 20%,
-      rgba(0, 200, 255, 0.12),
-      transparent 55%
-    ),
+  background:
+    radial-gradient(1200px 700px at 20% 10%, rgba(124, 92, 255, 0.14), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(0, 200, 255, 0.10), transparent 55%),
     var(--vs-bg);
   color: var(--vs-text);
 }
 
+html[data-theme="light"] body {
+  background:
+    radial-gradient(1200px 700px at 20% 10%, rgba(124, 92, 255, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(0, 200, 255, 0.08), transparent 55%),
+    var(--vs-bg);
+}
+
 .vs-node {
+  position: relative;
   width: 280px;
+  overflow: visible;
+}
+
+.vs-node__card {
   border: 1px solid var(--vs-border);
   border-radius: var(--vs-radius);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.01)
-  );
+  background: var(--vs-card);
   box-shadow: var(--vs-shadow);
-  overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .vs-node__header {
-  padding: 12px 12px 10px;
+  padding: var(--vs-space-3);
   border-bottom: 1px solid var(--vs-border);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--vs-header-bg);
 }
 
 .vs-node__title {
@@ -49,7 +91,6 @@ body {
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  letter-spacing: 0.2px;
 }
 
 .vs-node__subtitle {
@@ -59,28 +100,41 @@ body {
 }
 
 .vs-node__body {
-  padding: 12px;
+  padding: var(--vs-space-3);
   display: grid;
-  gap: 10px;
+  gap: 12px;
+}
+
+.vs-field {
+  display: grid;
+  gap: 6px;
 }
 
 .vs-field label {
   font-size: 12px;
   color: var(--vs-muted);
-  display: block;
-  margin-bottom: 6px;
 }
 
 .vs-input,
 .vs-textarea,
 .vs-select {
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--vs-border);
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--vs-field-radius);
+  border: 1px solid var(--vs-input-border);
+  background: var(--vs-input-bg);
   color: var(--vs-text);
-  padding: 10px 10px;
-  outline: none;
+  padding: 10px;
+}
+
+.vs-textarea--resizable {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.vs-textarea--noresize {
+  resize: none;
+  overflow: auto;
+  min-height: 90px;
 }
 
 .vs-input:focus,
@@ -98,24 +152,62 @@ body {
   background: var(--vs-accent) !important;
 }
 
-.vs-handle--target {
-  background: #22c55e !important;
+html[data-theme="light"] .vs-handle {
+  border-color: rgba(15, 23, 48, 0.55) !important;
 }
+
+.vs-handle--target {
+  background: var(--vs-green) !important;
+}
+
 .vs-handle--source {
-  background: #7c5cff !important;
+  background: var(--vs-accent) !important;
+}
+
+.react-flow__node {
+  overflow: visible;
+}
+
+.vs-node .react-flow__handle {
+  transform: none !important;
+}
+
+.vs-node .react-flow__handle-left {
+  transform: translate(calc(-1 * var(--vs-handle-outset)), -50%) !important;
+}
+
+.vs-node .react-flow__handle-right {
+  transform: translate(var(--vs-handle-outset), -50%) !important;
 }
 
 .vs-handle__label {
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 11px;
   color: var(--vs-muted);
   white-space: nowrap;
+  pointer-events: none;
 }
 
-.react-flow__controls button {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid var(--vs-border) !important;
-  color: var(--vs-text) !important;
+.vs-handle__label--left {
+  right: 18px;
+  text-align: right;
+}
+
+.vs-handle__label--right {
+  left: 18px;
+  text-align: left;
+}
+
+.vs-muted {
+  font-size: 13px;
+  color: var(--vs-muted);
+}
+
+.vs-muted--sm {
+  font-size: 12px;
+  opacity: 0.9;
 }
 
 .vs-node__delete {
@@ -125,18 +217,26 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--vs-delete-border);
+  background: var(--vs-delete-bg);
+  color: var(--vs-text);
   cursor: pointer;
   display: grid;
   place-items: center;
-  line-height: 1;
   font-size: 16px;
 }
 
 .vs-node__delete:hover {
   background: rgba(255, 80, 80, 0.12);
   border-color: rgba(255, 80, 80, 0.35);
-  color: rgba(255, 255, 255, 0.95);
+}
+
+.react-flow__controls button {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid var(--vs-border) !important;
+  color: var(--vs-text) !important;
+}
+
+html[data-theme="light"] .react-flow__controls button {
+  background: rgba(15, 23, 48, 0.06) !important;
 }

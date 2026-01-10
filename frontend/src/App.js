@@ -1,13 +1,16 @@
+import { ReactFlowProvider } from "reactflow";
 import { PipelineToolbar } from "./toolbar";
 import { PipelineUI } from "./ui";
 import "./styles/vs.css";
 
 function App() {
   return (
-    <div>
-      <PipelineToolbar />
-      <PipelineUI />
-    </div>
+    <ReactFlowProvider>
+      <div>
+        <PipelineToolbar />
+        <PipelineUI />
+      </div>
+    </ReactFlowProvider>
   );
 }
 

@@ -1,3 +1,4 @@
+// src/nodes/jsonNode.js
 import React, { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";
@@ -16,16 +17,19 @@ export const JsonNode = ({ id, data }) => {
       title="JSON"
       subtitle="Static JSON payload"
       handles={[
-        { type: "source", position: Position.Right, id: `${id}-json` },
+        {
+          type: "source",
+          position: Position.Right,
+          id: `${id}-json`,
+        },
       ]}
     >
       <div className="vs-field">
         <label>JSON</label>
         <textarea
-          className="vs-textarea"
+          className="vs-textarea vs-textarea--resizable"
           value={jsonText}
           onChange={(e) => setJsonText(e.target.value)}
-          style={{ resize: "vertical", minHeight: 90 }}
         />
       </div>
     </BaseNode>

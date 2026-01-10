@@ -1,5 +1,3 @@
-// llmNode.js
-
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";
 
@@ -15,14 +13,12 @@ export const LLMNode = ({ id }) => {
           position: Position.Left,
           id: `${id}-system`,
           label: "system",
-          style: { top: 70 },
         },
         {
           type: "target",
           position: Position.Left,
           id: `${id}-prompt`,
           label: "prompt",
-          style: { top: 110 },
         },
         {
           type: "source",
@@ -31,7 +27,7 @@ export const LLMNode = ({ id }) => {
         },
       ]}
     >
-      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
+      <div className="vs-muted">
         Produces a response based on system + prompt.
       </div>
     </BaseNode>

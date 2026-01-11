@@ -51,19 +51,33 @@ This is **not** meant to replicate tools like Zapier or n8n.
 
 ## 🚀 Getting Started
 
-### Install dependencies
+### Frontend
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Run the app
+Run the frontend:
 
 ```bash
-npm run dev
+npm start
 ```
 
-The app will be available at `http://localhost:5173` (or the port shown in terminal).
+Frontend runs on: **[http://localhost:3000](http://localhost:3000)**
+
+---
+
+### Backend
+
+Run the backend API:
+
+```bash
+python -m uvicorn main:app --reload
+```
+
+The backend is required for pipeline validation (DAG / cycle detection).
 
 ---
 

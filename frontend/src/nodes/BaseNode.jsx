@@ -87,7 +87,6 @@ export function BaseNode({
           ✕
         </button>
 
-        {/* ✅ Header must remain draggable — DO NOT stop pointer events here */}
         <div className="vs-node__header">
           <div className="vs-node__heading">
             <div className="vs-node__title">
@@ -100,7 +99,6 @@ export function BaseNode({
           </div>
         </div>
 
-        {/* ✅ Prevent drag/zoom only inside the content area */}
         <div className="vs-node__body nodrag nowheel">{children}</div>
       </div>
     </div>

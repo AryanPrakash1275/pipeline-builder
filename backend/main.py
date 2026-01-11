@@ -8,7 +8,6 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# Allow frontend dev server to call backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -64,7 +63,6 @@ def dag_analysis(nodes: List[Node], edges: List[Edge]) -> Dict[str, Any]:
     adj: Dict[str, List[str]] = defaultdict(list)
 
     for e in edges:
-        # Ignore edges that refer to missing nodes (defensive)
         if e.source not in node_ids or e.target not in node_ids:
             continue
         adj[e.source].append(e.target)
@@ -88,7 +86,6 @@ def dag_analysis(nodes: List[Node], edges: List[Edge]) -> Dict[str, Any]:
     if is_dag:
         return {"is_dag": True, "topo_order": topo, "cycle_nodes": []}
 
-    # Nodes still with indegree > 0 are part of (or downstream of) a cycle
     cycle_nodes = [nid for nid, deg in indegree.items() if deg > 0]
     return {"is_dag": False, "topo_order": [], "cycle_nodes": cycle_nodes}
 

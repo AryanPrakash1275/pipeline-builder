@@ -1,5 +1,3 @@
-// submit.js
-
 import { useCallback, useMemo, useState } from "react";
 
 function formatList(list, max = 8) {

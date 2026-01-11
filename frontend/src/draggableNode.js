@@ -1,4 +1,3 @@
-// draggableNode.js
 import React, { useMemo } from "react";
 
 export const DraggableNode = ({ type, label }) => {
@@ -11,7 +10,6 @@ export const DraggableNode = ({ type, label }) => {
   };
 
   const icon = useMemo(() => {
-    // simple icon mapping (no deps)
     switch (type) {
       case "customInput":
         return "⟵";

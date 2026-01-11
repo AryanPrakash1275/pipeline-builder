@@ -1,5 +1,3 @@
-// store.js
-
 import { create } from "zustand";
 import {
   addEdge,
@@ -61,7 +59,6 @@ export const useStore = create((set, get) => ({
     });
   },
 
-  // ✅ robust delete: removes node + connected edges
   deleteNode: (nodeId) => {
     if (!nodeId) return;
 

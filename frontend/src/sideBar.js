@@ -1,4 +1,3 @@
-// src/Sidebar.js
 import { useState } from "react";
 
 export function Sidebar({

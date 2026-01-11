@@ -1,4 +1,3 @@
-// src/nodes/inputNode.js
 import { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";

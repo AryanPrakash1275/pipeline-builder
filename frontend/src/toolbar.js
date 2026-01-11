@@ -1,4 +1,3 @@
-// src/toolbar.js
 import { DraggableNode } from "./draggableNode";
 
 export const PipelineToolbar = ({ locked = false, onToggleLock }) => {

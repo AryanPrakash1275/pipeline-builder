@@ -1,4 +1,3 @@
-// src/nodes/jsonNode.js
 import React, { useMemo, useState } from "react";
 import { Position } from "reactflow";
 import { BaseNode } from "./BaseNode";

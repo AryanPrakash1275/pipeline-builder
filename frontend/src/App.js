@@ -1,4 +1,3 @@
-// src/App.js
 import { useCallback, useState } from "react";
 import { ReactFlowProvider } from "reactflow";
 import { PipelineToolbar } from "./toolbar";

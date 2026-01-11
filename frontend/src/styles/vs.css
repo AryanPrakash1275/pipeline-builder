@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   Design Tokens
-   ========================= */
-
 :root {
   --vs-radius: 14px;
   --vs-field-radius: 10px;
@@ -57,13 +53,7 @@ html[data-theme="light"] {
   --vs-shadow: 0 12px 30px rgba(15, 23, 48, 0.10);
 }
 
-/* =========================
-   Base Page Styling
-   ========================= */
-
-html,
-body,
-#root {
+html, body, #root {
   height: 100%;
 }
 
@@ -86,9 +76,44 @@ html[data-theme="light"] body {
   color: var(--vs-text);
 }
 
-/* =========================
-   Node Base Styles
-   ========================= */
+.vs-app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.vs-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-flowWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.vs-canvas-wrap {
+  position: relative;
+  width: 100vw;
+  height: 70vh;
+}
+
+.vs-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.vs-submit-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 60;
+}
 
 .vs-node {
   position: relative;
@@ -131,9 +156,39 @@ html[data-theme="light"] body {
   gap: 12px;
 }
 
-/* =========================
-   Fields & Inputs
-   ========================= */
+.vs-node__heading {
+  display: grid;
+  gap: 4px;
+}
+
+.vs-node__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}
+
+.vs-node__delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid var(--vs-delete-border);
+  background: var(--vs-delete-bg);
+  color: var(--vs-text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+}
+
+.vs-node__delete:hover {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 80, 80, 0.35);
+}
 
 .vs-field {
   display: grid;
@@ -174,10 +229,6 @@ html[data-theme="light"] body {
   border-color: rgba(124, 92, 255, 0.65);
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.16);
 }
-
-/* =========================
-   Handles
-   ========================= */
 
 .vs-handle {
   width: 12px !important;
@@ -242,35 +293,6 @@ html[data-theme="light"] .vs-handle {
   text-align: left;
 }
 
-/* =========================
-   Node Delete Button
-   ========================= */
-
-.vs-node__delete {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  border: 1px solid var(--vs-delete-border);
-  background: var(--vs-delete-bg);
-  color: var(--vs-text);
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-}
-
-.vs-node__delete:hover {
-  background: rgba(255, 80, 80, 0.12);
-  border-color: rgba(255, 80, 80, 0.35);
-}
-
-/* =========================
-   Toolbar + Palette
-   ========================= */
-
 .vs-toolbar {
   position: sticky;
   top: 0;
@@ -310,20 +332,6 @@ html[data-theme="light"] .vs-toolbar {
   outline: none;
 }
 
-.vs-btn {
-  border: 1px solid var(--vs-input-border);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--vs-text);
-  border-radius: 12px;
-  padding: 8px 11px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.vs-btn:hover {
-  background: rgba(255, 255, 255, 0.10);
-}
-
 .vs-palette {
   margin-top: 10px;
   display: flex;
@@ -341,27 +349,150 @@ html[data-theme="light"] .vs-toolbar {
   box-shadow: var(--vs-shadow);
 }
 
-/* =========================
-   Canvas + Submit
-   ========================= */
+.vs-palette.is-locked {
+  pointer-events: none;
+  opacity: 0.6;
+}
 
-.vs-canvas-wrap {
+.vs-btn {
+  appearance: none;
+  border: 1px solid var(--vs-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--vs-text);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.vs-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.vs-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.vs-btn--primary {
+  border-color: rgba(124, 92, 255, 0.55);
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.95), rgba(92, 64, 235, 0.95));
+  color: #fff;
+}
+
+.vs-btn--primary:hover {
+  background: linear-gradient(180deg, rgba(134, 104, 255, 1), rgba(102, 74, 245, 1));
+}
+
+.vs-rail {
+  width: 72px;
+  flex: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 8px;
+  border-right: 1px solid var(--vs-border);
+  background: var(--vs-bg);
+}
+
+.vs-rail__top,
+.vs-rail__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.vs-rail__btn {
+  width: 52px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  color: var(--vs-text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--vs-shadow-sm);
+}
+
+.vs-rail__btn:hover {
+  background: var(--vs-panel-2);
+}
+
+.vs-rail__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-rail__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.vs-rail__demo {
   position: relative;
-  width: 100vw;
-  height: 70vh;
 }
 
-.vs-submit-wrap {
-  position: fixed;
-  left: 50%;
-  bottom: 14px;
-  transform: translateX(-50%);
-  z-index: 60;
+.vs-rail__popover {
+  position: absolute;
+  left: 60px;
+  top: 0;
+  width: 160px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 50;
 }
 
-/* =========================
-   ReactFlow Polish
-   ========================= */
+.vs-rail__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel-2);
+  color: var(--vs-text);
+  cursor: pointer;
+}
+
+.vs-rail__item:hover {
+  background: var(--vs-panel-3);
+}
+
+.vs-rail__item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-rail__meta {
+  width: 100%;
+  text-align: center;
+  opacity: 0.85;
+  padding-top: 8px;
+}
+
+.vs-rail__metaTitle {
+  font-size: 11px;
+}
+
+.vs-rail__metaSub {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.vs-rail__btn[title="Full wipe"] .vs-rail__icon {
+  font-size: 16px;
+}
 
 .react-flow__edge-path {
   stroke: rgba(255, 255, 255, 0.40);
@@ -371,6 +502,14 @@ html[data-theme="light"] .vs-toolbar {
 .react-flow__edge.animated .react-flow__edge-path {
   stroke: rgba(255, 255, 255, 0.30);
   stroke-dasharray: 4 6;
+}
+
+.react-flow__controls {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
 }
 
 .react-flow__controls button {
@@ -383,28 +522,30 @@ html[data-theme="light"] .react-flow__controls button {
   background: rgba(15, 23, 48, 0.06) !important;
 }
 
+.react-flow__controls-button {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--vs-border);
+  background: transparent;
+  color: var(--vs-text);
+}
+
+.react-flow__controls-button:hover {
+  background: var(--vs-panel-2);
+}
+
 .react-flow__minimap {
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--vs-border);
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
 }
 
 html[data-theme="light"] .react-flow__minimap {
   background: rgba(255, 255, 255, 0.75);
-}
-
-.vs-node__heading {
-  display: grid;
-  gap: 4px;
-}
-
-.vs-node__icon {
-  display: inline-grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  opacity: 0.9;
 }
 
 .vs-modal__backdrop {
@@ -521,365 +662,4 @@ html[data-theme="light"] .vs-kv {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-}
-
-.vs-btn {
-  appearance: none;
-  border: 1px solid var(--vs-border);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--vs-text);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-}
-
-.vs-btn:hover {
-  background: rgba(255, 255, 255, 0.10);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-.vs-btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.vs-btn--primary {
-  border-color: rgba(124, 92, 255, 0.55);
-  background: linear-gradient(
-    180deg,
-    rgba(124, 92, 255, 0.95),
-    rgba(92, 64, 235, 0.95)
-  );
-  color: #fff;
-}
-
-.vs-btn--primary:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(134, 104, 255, 1),
-    rgba(102, 74, 245, 1)
-  );
-}
-
-/* ===== Layout: left rail + main ===== */
-.vs-app {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-}
-
-.vs-rail {
-  width: 72px;
-  flex: 0 0 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 8px;
-  border-right: 1px solid var(--vs-border);
-  background: var(--vs-bg);
-}
-
-.vs-rail__top,
-.vs-rail__bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-.vs-rail__btn {
-  width: 52px;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  color: var(--vs-text);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  box-shadow: var(--vs-shadow-sm);
-}
-
-.vs-rail__btn:hover {
-  background: var(--vs-panel-2);
-}
-
-.vs-rail__btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.vs-rail__icon {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.vs-rail__demo {
-  position: relative;
-}
-
-.vs-rail__popover {
-  position: absolute;
-  left: 60px;
-  top: 0;
-  width: 160px;
-  padding: 8px;
-  border-radius: 14px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 50;
-}
-
-.vs-rail__item {
-  width: 100%;
-  text-align: left;
-  padding: 10px 10px;
-  border-radius: 12px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel-2);
-  color: var(--vs-text);
-  cursor: pointer;
-}
-
-.vs-rail__item:hover {
-  background: var(--vs-panel-3);
-}
-
-.vs-rail__meta {
-  width: 100%;
-  text-align: center;
-  opacity: 0.8;
-  padding-top: 8px;
-}
-
-.vs-rail__metaTitle {
-  font-size: 11px;
-}
-
-.vs-rail__metaSub {
-  font-size: 10px;
-  opacity: 0.8;
-}
-
-.vs-main {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Keep your toolbar as-is, but make sure it spans full width */
-.vs-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-/* Canvas container should fill remaining space */
-.vs-canvas {
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
-/* ===== Bigger ReactFlow controls (bottom-left) ===== */
-.react-flow__controls {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-}
-
-.react-flow__controls-button {
-  width: 44px;
-  height: 44px;
-  font-size: 18px;
-  border: 0;
-  border-bottom: 1px solid var(--vs-border);
-  background: transparent;
-  color: var(--vs-text);
-}
-
-.react-flow__controls-button:hover {
-  background: var(--vs-panel-2);
-}
-
-/* ===== Minimap polish (bottom-right) ===== */
-.react-flow__minimap {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-}
-
-/* add to src/styles/vs.css */
-
-.vs-app {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-}
-
-.vs-main {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.vs-flowWrap {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  position: relative;
-}
-
-.vs-rail {
-  width: 72px;
-  flex: 0 0 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 8px;
-  border-right: 1px solid var(--vs-border);
-  background: var(--vs-bg);
-}
-
-.vs-rail__top,
-.vs-rail__bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-.vs-rail__btn {
-  width: 52px;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  color: var(--vs-text);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  box-shadow: var(--vs-shadow-sm);
-}
-
-.vs-rail__btn:hover {
-  background: var(--vs-panel-2);
-}
-
-.vs-rail__btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.vs-rail__icon {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.vs-rail__demo {
-  position: relative;
-}
-
-.vs-rail__popover {
-  position: absolute;
-  left: 60px;
-  top: 0;
-  width: 160px;
-  padding: 8px;
-  border-radius: 14px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 50;
-}
-
-.vs-rail__item {
-  width: 100%;
-  text-align: left;
-  padding: 10px 10px;
-  border-radius: 12px;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel-2);
-  color: var(--vs-text);
-  cursor: pointer;
-}
-
-.vs-rail__item:hover {
-  background: var(--vs-panel-3);
-}
-
-.vs-rail__item:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.vs-rail__meta {
-  width: 100%;
-  text-align: center;
-  opacity: 0.85;
-  padding-top: 8px;
-}
-
-.vs-rail__metaTitle {
-  font-size: 11px;
-}
-
-.vs-rail__metaSub {
-  font-size: 10px;
-  opacity: 0.8;
-}
-
-.vs-palette.is-locked {
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.react-flow__controls {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-}
-
-.react-flow__controls-button {
-  width: 44px;
-  height: 44px;
-  font-size: 18px;
-  border: 0;
-  border-bottom: 1px solid var(--vs-border);
-  background: transparent;
-  color: var(--vs-text);
-}
-
-.react-flow__controls-button:hover {
-  background: var(--vs-panel-2);
-}
-
-.react-flow__minimap {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--vs-border);
-  background: var(--vs-panel);
-  box-shadow: var(--vs-shadow-lg);
-}
-
-.vs-rail__btn[title="Full wipe"] .vs-rail__icon {
-  font-size: 16px;
 }

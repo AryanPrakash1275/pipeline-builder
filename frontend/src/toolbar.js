@@ -63,6 +63,7 @@ export const PipelineToolbar = () => {
         id: "e1",
         source: "customInput-1",
         target: "text-1",
+        targetHandle: "text-1-var-anme",
         type: "smoothstep",
         animated: true,
       },

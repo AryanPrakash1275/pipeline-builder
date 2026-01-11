@@ -225,8 +225,13 @@ export const SubmitButton = ({ nodes, edges }) => {
           padding: 12,
         }}
       >
-        <button type="button" onClick={onSubmit}>
-          Submit
+        <button
+          type="button"
+          className="vs-btn vs-btn--primary"
+          onClick={onSubmit}
+        >
+
+          Submit pipeline
         </button>
       </div>
 

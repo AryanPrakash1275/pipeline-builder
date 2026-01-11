@@ -217,18 +217,23 @@ export const SubmitButton = ({ nodes, edges }) => {
     <>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 12,
+          position: "fixed",
+          left: "50%",
+          bottom: 14,
+          transform: "translateX(-50%)",
+          zIndex: 100000,
+          pointerEvents: "auto",
         }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           className="vs-btn vs-btn--primary"
           onClick={onSubmit}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
         >
-
           Submit pipeline
         </button>
       </div>

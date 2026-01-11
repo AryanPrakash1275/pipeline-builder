@@ -9,17 +9,20 @@ export const PipelineToolbar = () => {
   const setEdges = useStore((s) => s.setEdges);
 
   const { fitView } = useReactFlow();
-
   const [demo, setDemo] = useState("demo1");
 
   const runFitView = useCallback(() => {
-    // safest way to ensure nodes/edges are committed + measured
+    // Safest way to ensure nodes/edges are committed + measured
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         fitView({ padding: 0.25, duration: 300 });
       });
     });
   }, [fitView]);
+
+  /* =========================
+     Demo 1 — Text → LLM
+     ========================= */
 
   const loadDemo1 = useCallback(() => {
     const demoNodes = [
@@ -56,17 +59,51 @@ export const PipelineToolbar = () => {
     ];
 
     const demoEdges = [
-      { id: "e1", source: "customInput-1", target: "text-1", type: "smoothstep", animated: true },
-      { id: "e2", source: "text-1", target: "llm-1", type: "smoothstep", animated: true },
-      { id: "e3", source: "llm-1", target: "customOutput-1", type: "smoothstep", animated: true },
-      { id: "e4", source: "llm-1", target: "delay-1", type: "smoothstep", animated: true },
-      { id: "e5", source: "delay-1", target: "customOutput-1", type: "smoothstep", animated: true },
+      {
+        id: "e1",
+        source: "customInput-1",
+        target: "text-1",
+        type: "smoothstep",
+        animated: true,
+      },
+      {
+        id: "e2",
+        source: "text-1",
+        target: "llm-1",
+        type: "smoothstep",
+        animated: true,
+      },
+      {
+        id: "e3",
+        source: "llm-1",
+        target: "customOutput-1",
+        type: "smoothstep",
+        animated: true,
+      },
+      {
+        id: "e4",
+        source: "llm-1",
+        target: "delay-1",
+        type: "smoothstep",
+        animated: true,
+      },
+      {
+        id: "e5",
+        source: "delay-1",
+        target: "customOutput-1",
+        type: "smoothstep",
+        animated: true,
+      },
     ];
 
     setNodes(demoNodes);
     setEdges(demoEdges);
     runFitView();
   }, [setNodes, setEdges, runFitView]);
+
+  /* =========================
+     Demo 2 — Switch + Merge
+     ========================= */
 
   const loadDemo2 = useCallback(() => {
     const demoNodes = [
@@ -112,13 +149,45 @@ export const PipelineToolbar = () => {
       },
     ];
 
+    // IMPORTANT:
+    // MergeNode handle ids are:
+    // - merge-1-a
+    // - merge-1-b
+    // - merge-1-out
     const demoEdges = [
-      { id: "d2e1", source: "customInput-2", target: "switch-1", type: "smoothstep", animated: true },
-      { id: "d2e2", source: "switch-1", target: "json-1", type: "smoothstep", animated: true },
-      { id: "d2e3", source: "switch-1", target: "number-1", type: "smoothstep", animated: true },
-      { id: "d2e4", source: "json-1", target: "merge-1", type: "smoothstep", animated: true },
-      { id: "d2e5", source: "number-1", target: "merge-1", type: "smoothstep", animated: true },
-      { id: "d2e6", source: "merge-1", target: "customOutput-2", type: "smoothstep", animated: true },
+      {
+        id: "d2e1",
+        source: "customInput-2",
+        target: "switch-1",
+        type: "smoothstep",
+        animated: true,
+      },
+
+      {
+        id: "d2e4",
+        source: "json-1",
+        target: "merge-1",
+        targetHandle: "merge-1-a",
+        type: "smoothstep",
+        animated: true,
+      },
+      {
+        id: "d2e5",
+        source: "number-1",
+        target: "merge-1",
+        targetHandle: "merge-1-b",
+        type: "smoothstep",
+        animated: true,
+      },
+
+      {
+        id: "d2e6",
+        source: "merge-1",
+        sourceHandle: "merge-1-out",
+        target: "customOutput-2",
+        type: "smoothstep",
+        animated: true,
+      },
     ];
 
     setNodes(demoNodes);
@@ -131,26 +200,22 @@ export const PipelineToolbar = () => {
     else loadDemo1();
   }, [demo, loadDemo1, loadDemo2]);
 
+  /* =========================
+     Render
+     ========================= */
+
   return (
-    <div style={{ padding: "10px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div style={{ fontWeight: 700, fontSize: 14 }}>Available Nodes</div>
+    <div className="vs-toolbar">
+      <div className="vs-toolbar__row">
+        <div className="vs-toolbar__title">Available Nodes</div>
+
+        <div className="vs-toolbar__spacer" />
 
         <select
+          className="vs-control"
           value={demo}
           onChange={(e) => setDemo(e.target.value)}
           onPointerDown={(e) => e.stopPropagation()}
-          style={{
-            marginLeft: "auto",
-            border: "1px solid rgba(255,255,255,0.18)",
-            background: "rgba(255,255,255,0.05)",
-            color: "rgba(255,255,255,0.9)",
-            borderRadius: 10,
-            padding: "6px 10px",
-            cursor: "pointer",
-            fontSize: 12,
-            outline: "none",
-          }}
         >
           <option value="demo1">Demo 1 — Text → LLM</option>
           <option value="demo2">Demo 2 — Switch + Merge</option>
@@ -158,23 +223,15 @@ export const PipelineToolbar = () => {
 
         <button
           type="button"
+          className="vs-btn"
           onClick={loadSelectedDemo}
           onPointerDown={(e) => e.stopPropagation()}
-          style={{
-            border: "1px solid rgba(255,255,255,0.18)",
-            background: "rgba(255,255,255,0.05)",
-            color: "rgba(255,255,255,0.9)",
-            borderRadius: 10,
-            padding: "6px 10px",
-            cursor: "pointer",
-            fontSize: 12,
-          }}
         >
           Load Demo
         </button>
       </div>
 
-      <div style={{ marginTop: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <div className="vs-palette">
         <DraggableNode type="customInput" label="Input" />
         <DraggableNode type="llm" label="LLM" />
         <DraggableNode type="customOutput" label="Output" />

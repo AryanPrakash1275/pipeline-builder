@@ -6,6 +6,11 @@ function laneTopPct(index, count) {
   return `${((index + 1) * 100) / (count + 1)}%`;
 }
 
+function stopAll(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
 export function BaseNode({
   nodeId,
   title,
@@ -17,17 +22,12 @@ export function BaseNode({
 }) {
   const deleteNode = useStore((s) => s.deleteNode);
 
-  const killEvent = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
-
   const onDelete = useCallback(
     (e) => {
-      killEvent(e);
+      stopAll(e);
       deleteNode(nodeId);
     },
-    [deleteNode, nodeId, killEvent]
+    [deleteNode, nodeId]
   );
 
   const renderedHandles = useMemo(() => {
@@ -59,7 +59,7 @@ export function BaseNode({
           <span
             className={[
               "vs-handle__label",
-              h.position === Position.Right
+              (h.position ?? Position.Left) === Position.Right
                 ? "vs-handle__label--right"
                 : "vs-handle__label--left",
             ].join(" ")}
@@ -81,21 +81,27 @@ export function BaseNode({
           className="vs-node__delete"
           title="Delete node"
           onPointerDown={onDelete}
-          onMouseDown={killEvent}
-          onClick={killEvent}
+          onMouseDown={stopAll}
+          onClick={stopAll}
         >
           ✕
         </button>
 
+        {/* ✅ Header must remain draggable — DO NOT stop pointer events here */}
         <div className="vs-node__header">
-          <div className="vs-node__title">
-            {icon ? <span className="vs-node__icon">{icon}</span> : null}
-            <span>{title}</span>
+          <div className="vs-node__heading">
+            <div className="vs-node__title">
+              {icon ? <span className="vs-node__icon">{icon}</span> : null}
+              <span>{title}</span>
+            </div>
+            {subtitle ? (
+              <div className="vs-node__subtitle">{subtitle}</div>
+            ) : null}
           </div>
-          {subtitle ? <div className="vs-node__subtitle">{subtitle}</div> : null}
         </div>
 
-        <div className="vs-node__body">{children}</div>
+        {/* ✅ Prevent drag/zoom only inside the content area */}
+        <div className="vs-node__body nodrag nowheel">{children}</div>
       </div>
     </div>
   );

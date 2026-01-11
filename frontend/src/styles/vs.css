@@ -392,3 +392,16 @@ html[data-theme="light"] .react-flow__controls button {
 html[data-theme="light"] .react-flow__minimap {
   background: rgba(255, 255, 255, 0.75);
 }
+
+.vs-node__heading {
+  display: grid;
+  gap: 4px;
+}
+
+.vs-node__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}

@@ -564,3 +564,322 @@ html[data-theme="light"] .vs-kv {
     rgba(102, 74, 245, 1)
   );
 }
+
+/* ===== Layout: left rail + main ===== */
+.vs-app {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.vs-rail {
+  width: 72px;
+  flex: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 8px;
+  border-right: 1px solid var(--vs-border);
+  background: var(--vs-bg);
+}
+
+.vs-rail__top,
+.vs-rail__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.vs-rail__btn {
+  width: 52px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  color: var(--vs-text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--vs-shadow-sm);
+}
+
+.vs-rail__btn:hover {
+  background: var(--vs-panel-2);
+}
+
+.vs-rail__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-rail__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.vs-rail__demo {
+  position: relative;
+}
+
+.vs-rail__popover {
+  position: absolute;
+  left: 60px;
+  top: 0;
+  width: 160px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 50;
+}
+
+.vs-rail__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel-2);
+  color: var(--vs-text);
+  cursor: pointer;
+}
+
+.vs-rail__item:hover {
+  background: var(--vs-panel-3);
+}
+
+.vs-rail__meta {
+  width: 100%;
+  text-align: center;
+  opacity: 0.8;
+  padding-top: 8px;
+}
+
+.vs-rail__metaTitle {
+  font-size: 11px;
+}
+
+.vs-rail__metaSub {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.vs-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep your toolbar as-is, but make sure it spans full width */
+.vs-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+/* Canvas container should fill remaining space */
+.vs-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ===== Bigger ReactFlow controls (bottom-left) ===== */
+.react-flow__controls {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+}
+
+.react-flow__controls-button {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--vs-border);
+  background: transparent;
+  color: var(--vs-text);
+}
+
+.react-flow__controls-button:hover {
+  background: var(--vs-panel-2);
+}
+
+/* ===== Minimap polish (bottom-right) ===== */
+.react-flow__minimap {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+}
+
+/* add to src/styles/vs.css */
+
+.vs-app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.vs-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-flowWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.vs-rail {
+  width: 72px;
+  flex: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 8px;
+  border-right: 1px solid var(--vs-border);
+  background: var(--vs-bg);
+}
+
+.vs-rail__top,
+.vs-rail__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.vs-rail__btn {
+  width: 52px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  color: var(--vs-text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--vs-shadow-sm);
+}
+
+.vs-rail__btn:hover {
+  background: var(--vs-panel-2);
+}
+
+.vs-rail__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-rail__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.vs-rail__demo {
+  position: relative;
+}
+
+.vs-rail__popover {
+  position: absolute;
+  left: 60px;
+  top: 0;
+  width: 160px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 50;
+}
+
+.vs-rail__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel-2);
+  color: var(--vs-text);
+  cursor: pointer;
+}
+
+.vs-rail__item:hover {
+  background: var(--vs-panel-3);
+}
+
+.vs-rail__item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-rail__meta {
+  width: 100%;
+  text-align: center;
+  opacity: 0.85;
+  padding-top: 8px;
+}
+
+.vs-rail__metaTitle {
+  font-size: 11px;
+}
+
+.vs-rail__metaSub {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.vs-palette.is-locked {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.react-flow__controls {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+}
+
+.react-flow__controls-button {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--vs-border);
+  background: transparent;
+  color: var(--vs-text);
+}
+
+.react-flow__controls-button:hover {
+  background: var(--vs-panel-2);
+}
+
+.react-flow__minimap {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--vs-border);
+  background: var(--vs-panel);
+  box-shadow: var(--vs-shadow-lg);
+}
+
+.vs-rail__btn[title="Full wipe"] .vs-rail__icon {
+  font-size: 16px;
+}

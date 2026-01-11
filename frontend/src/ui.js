@@ -1,7 +1,4 @@
-// ui.js
-// Displays the drag-and-drop UI
-// --------------------------------------------------
-
+// src/ui.js
 import { useEffect, useState, useRef, useCallback } from "react";
 import ReactFlow, { Controls, Background, MiniMap } from "reactflow";
 import { useStore } from "./store";
@@ -49,7 +46,7 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 });
 
-export const PipelineUI = () => {
+export const PipelineUI = ({ locked = false }) => {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
@@ -70,6 +67,8 @@ export const PipelineUI = () => {
 
   const deleteSelection = useCallback(
     (event) => {
+      if (locked) return;
+
       if (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -95,11 +94,13 @@ export const PipelineUI = () => {
       setSelectedNodes([]);
       setSelectedEdges([]);
     },
-    [selectedNodes, selectedEdges, nodes, edges, setNodes, setEdges]
+    [locked, selectedNodes, selectedEdges, nodes, edges, setNodes, setEdges]
   );
 
   const onDrop = useCallback(
     (event) => {
+      if (locked) return;
+
       event.preventDefault();
 
       const bounds = reactFlowWrapper.current.getBoundingClientRect();
@@ -127,17 +128,22 @@ export const PipelineUI = () => {
 
       addNode(newNode);
     },
-    [reactFlowInstance, getNodeID, addNode]
+    [locked, reactFlowInstance, getNodeID, addNode]
   );
 
-  const onDragOver = useCallback((event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
+  const onDragOver = useCallback(
+    (event) => {
+      if (locked) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+    },
+    [locked]
+  );
 
-  // Delete/Backspace + Ctrl/Cmd+X (Cut)
   const onKeyDown = useCallback(
     (event) => {
+      if (locked) return;
+
       const el = document.activeElement;
       const typing =
         el &&
@@ -158,27 +164,31 @@ export const PipelineUI = () => {
       event.preventDefault();
       deleteSelection(event);
     },
-    [deleteSelection]
+    [locked, deleteSelection]
   );
 
-  // Global key listener so it works without focus
   useEffect(() => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown]);
 
+  const handleConnect = useCallback(
+    (params) => {
+      if (locked) return;
+      onConnect(params);
+    },
+    [locked, onConnect]
+  );
+
   return (
     <>
-      <div
-        ref={reactFlowWrapper}
-        style={{ width: "100vw", height: "70vh", position: "relative" }}
-      >
+      <div ref={reactFlowWrapper} className="vs-flowWrap">
         <ReactFlow
           nodes={nodes}
           edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
+          onNodesChange={locked ? undefined : onNodesChange}
+          onEdgesChange={locked ? undefined : onEdgesChange}
+          onConnect={handleConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
           onInit={setReactFlowInstance}
@@ -186,13 +196,15 @@ export const PipelineUI = () => {
           proOptions={proOptions}
           snapGrid={[gridSize, gridSize]}
           connectionLineType="smoothstep"
+          nodesDraggable={!locked}
+          nodesConnectable={!locked}
           onSelectionChange={({ nodes: ns, edges: es }) => {
             setSelectedNodes(ns || []);
             setSelectedEdges(es || []);
           }}
         >
           <Background gap={gridSize} />
-          <Controls />
+          <Controls showInteractive={false} />
           <MiniMap />
         </ReactFlow>
       </div>
